@@ -1,0 +1,56 @@
+// Longitude Expression
+//Avg(round (256*pow(2,($(var_zoom)-1)))+( Longitude *((256*pow(2,$(var_zoom)))/360)))
+
+// Latitude Expression
+//Avg(((256*pow(2,($(var_zoom)-1)))+((0.5*log((1+(sin((Latitude)*pi()/180)))/(1-(sin((Latitude)*pi()/180)))))*((-256*pow(2,$(var_zoom)))/(2*pi())))))
+
+// Dynamic Image
+/*='http://maps.google.com/maps/api/staticmap?center='   & 
+  num(var_mid_lat, '##############', '.', ',' )   &   ','   &  
+   num(var_mid_long, '##############', '.', ',' )   &
+      '&zoom=$(var_zoom)'   &   '&maptype='&var_maptype   &   
+   '&size='&def_map_size&'x'&def_map_size   &
+      '&key='& 'AIzaSyDbx5rUzOYMIlabrmnxeM39isk_LkseXPM' & '&sensor=false' 
+
+*/
+// Axis Min (X Axis)
+//(256*pow(2,((var_zoom)-1)))+((var_mid_long)*((256*pow(2,(var_zoom)))/360))-(def_map_size*0.5)
+// Axis Max (X Axis)
+//((256*pow(2,((var_zoom)-1)))+((var_mid_long)*((256*pow(2,(var_zoom)))/360))+(def_map_size*0.5))
+// Axis Min (Y Axis)
+//((256*pow(2,((var_zoom)-1)))+((0.5*log((1+(sin((var_mid_lat)*pi()/180)))/(1- (sin((var_mid_lat)*pi()/180)))))*((-256*pow(2,(var_zoom)))/(2*pi())))+(def_map_size*0.5))
+// Axis Max (Y Axis)
+//((256*pow(2,((var_zoom)-1)))+((0.5*log((1+(sin((var_mid_lat)*pi()/180)))/(1- (sin((var_mid_lat)*pi()/180)))))*((-256*pow(2,(var_zoom)))/(2*pi())))-(def_map_size*0.5))
+
+
+// Google Maps Key
+// get a key here http://code.google.com/apis/maps/signup.html
+gmap_key = 'AIzaSyDbx5rUzOYMIlabrmnxeM39isk_LkseXPM';
+max_zoom_level = 14; //maximum value 17
+def_zoom_level = 1;
+def_map_size = 400;
+
+// No need to change these
+var_pi180= '=pi()/180';
+var_lat_offset= '0';
+var_mc2= '=256*pow(2,$(var_zoom))';
+var_mc1= '=256*pow(2,($(var_zoom)-1))';
+var_mid_lat= '=median(Latitude)';
+var_mid_long= '=median(Longitude)';
+var_zoom= '=If(max(aggr(if(max( round(256*pow(2,(_zoom_level -1)))+( Longitude *((256*pow(2,_zoom_level
+))/360)) )-min( round(256*pow(2,(_zoom_level -1)))+( Longitude *((256*pow(2,_zoom_level ))/360)) )
+<def_map_size AND max((256*pow(2,(_zoom_level-1)))+((0.5*log((1+(sin((Latitude)*pi()/180)))/(1-
+(sin((Latitude)*pi()/180)))))*((-256*pow(2,_zoom_level))/(2*pi()))))-min((256*pow(2,(_zoom_level-
+1)))+((0.5*log((1+(sin((Latitude)*pi()/180)))/(1-(sin((Latitude)*pi()/180)))))*((-
+256*pow(2,_zoom_level))/(2*pi()))))<def_map_size,_zoom_level,null()),_zoom_level))>def_zoom_level,
+max(aggr(if(max( round(256*pow(2,(_zoom_level -1)))+( Longitude *((256*pow(2,_zoom_level ))/360)) )-min(
+round(256*pow(2,(_zoom_level -1)))+( Longitude *((256*pow(2,_zoom_level ))/360)) ) <def_map_size AND
+max((256*pow(2,(_zoom_level-1)))+((0.5*log((1+(sin((Latitude)*pi()/180)))/(1-(sin((Latitude)*pi()/180)))))*((-
+256*pow(2,_zoom_level))/(2*pi()))))-min((256*pow(2,(_zoom_level-
+1)))+((0.5*log((1+(sin((Latitude)*pi()/180)))/(1-(sin((Latitude)*pi()/180)))))*((-
+256*pow(2,_zoom_level))/(2*pi()))))<def_map_size,_zoom_level,null()),_zoom_level)),def_zoom_level)';
+var_maptype= '=if(isnull(only(maptype)),fieldvalue( '&chr(39)&'maptype'&chr(39)&', 4 ),maptype)';
+
+
+_zoom_level:
+Load RecNo( ) as _zoom_level autogenerate(max_zoom_level);

@@ -1,0 +1,12 @@
+Island:
+LOAD * inline [
+_Heading,_HPos
+Store,1
+Manager,2
+Sales Person,3
+Country,4
+Category,5
+Sub-Category,6
+Product,7
+Month,8
+];

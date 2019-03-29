@@ -1,0 +1,34 @@
+
+/*
+This sheet create a calendar for the model.
+
+This load statment retrieves the minimum and maximum dates within the transactional data.
+This avoids having to manually update loops, as well as avoiding having aditional dates within the calendar.
+*/
+MinMax:
+LOAD Min([Order Date]) as [Min Date],
+	Max([Order Date]) as [Max Date],
+	1
+RESIDENT Fact
+;
+
+
+LET vMax = FieldValue('Max Date', 1); //This retrieves the maximum date from the table allow us to use it in a loop.
+LET vMin = FieldValue('Min Date', 1); //This retrieves the minimum date from the table allow us to use it in a loop.
+
+DROP TABLE MinMax;
+
+Calendar:
+
+LOAD ($(vMin) + rowno() - 1) as [Order Date],
+	Date($(vMin) + rowno() - 1,'YYYY/MM/DD') as [Date],
+	MonthName($(vMin) + rowno() - 1) as [Month Name],
+	Month($(vMin) + rowno() - 1) as [Month],
+	Weekday($(vMin) + rowno() - 1) as [DOW],
+	Year($(vMin) + rowno() - 1) as [Year],
+	Day($(vMin) + rowno() - 1) as [Day],
+	Week($(vMin) + rowno()-1) as [Week],
+	Weekname($(vMin) + rowno()-1) as [Week Name]
+	
+AUTOGENERATE(($(vMax) - $(vMin)) + 1);
+

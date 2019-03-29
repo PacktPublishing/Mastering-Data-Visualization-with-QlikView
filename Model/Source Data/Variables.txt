@@ -1,0 +1,18 @@
+
+// Colours
+Let vTabOn = RGB(0,0,180);
+Let vTabOff = RGB(0,163,240);
+Let vTextOn = RGB(255,255,255);
+Let vTextOff = RGB(0,0,0);
+Let vRed = RGB(256,128,128);
+Let vGreen = RGB(128,256,128);
+Let vCaptionColour = RGB(0,0,180);
+Let vText = RGB(255,255,255);
+
+// Locations
+Let vSourceData = 'Source Data\';
+
+// Expressions
+Set vSales = 'sum(Sales)';
+Set vProfit = 'sum(Sales-Cost)';
+Set vTarget = 25;

@@ -1,0 +1,3 @@
+let vLastLoadStart = now(); 
+let vLastLoadEnd = now(); 
+='Last load date: ' & date(vLastLoadStart, 'DD MMM YYYY hh:mm:ss') & chr(13)& 'Load duration: ' & date(vLastLoadEnd - vLastLoadStart, 'hh:mm:ss') 
